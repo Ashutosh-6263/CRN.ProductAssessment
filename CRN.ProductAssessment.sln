@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37111.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRN.Domain", "CRN.Domain\CRN.Domain.csproj", "{A12EC002-B9E3-4ABA-8BA0-C905EF1F2095}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRN.Application", "CRN.Application\CRN.Application.csproj", "{BFF251D1-1983-4C12-812A-7FB5CB910DDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRN.Infrastructure", "CRN.Infrastructure\CRN.Infrastructure.csproj", "{FA568B20-D362-4557-BF92-BCAC472B6320}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRN.API", "CRN.API\CRN.API.csproj", "{E40E8917-0070-4E04-9883-2AD1EAE07159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRN.Application.Tests", "CRN.Application.Tests\CRN.Application.Tests.csproj", "{5B4933F5-A9E7-4C0E-B824-468527F416F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRN.API.Tests", "CRN.API.Tests\CRN.API.Tests.csproj", "{D2F17989-8F03-4EED-B5F0-6707875C8155}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A12EC002-B9E3-4ABA-8BA0-C905EF1F2095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12EC002-B9E3-4ABA-8BA0-C905EF1F2095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12EC002-B9E3-4ABA-8BA0-C905EF1F2095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12EC002-B9E3-4ABA-8BA0-C905EF1F2095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF251D1-1983-4C12-812A-7FB5CB910DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF251D1-1983-4C12-812A-7FB5CB910DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF251D1-1983-4C12-812A-7FB5CB910DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF251D1-1983-4C12-812A-7FB5CB910DDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA568B20-D362-4557-BF92-BCAC472B6320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA568B20-D362-4557-BF92-BCAC472B6320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA568B20-D362-4557-BF92-BCAC472B6320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA568B20-D362-4557-BF92-BCAC472B6320}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E40E8917-0070-4E04-9883-2AD1EAE07159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E40E8917-0070-4E04-9883-2AD1EAE07159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E40E8917-0070-4E04-9883-2AD1EAE07159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E40E8917-0070-4E04-9883-2AD1EAE07159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B4933F5-A9E7-4C0E-B824-468527F416F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B4933F5-A9E7-4C0E-B824-468527F416F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B4933F5-A9E7-4C0E-B824-468527F416F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B4933F5-A9E7-4C0E-B824-468527F416F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F17989-8F03-4EED-B5F0-6707875C8155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F17989-8F03-4EED-B5F0-6707875C8155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F17989-8F03-4EED-B5F0-6707875C8155}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F17989-8F03-4EED-B5F0-6707875C8155}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E91355A9-1E4D-4495-928C-6FAA30242818}
+	EndGlobalSection
+EndGlobal
