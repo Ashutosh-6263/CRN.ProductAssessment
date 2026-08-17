@@ -1,4 +1,4 @@
-  name: .NET CI
+name: .NET CI
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     services:
@@ -26,44 +25,43 @@ jobs:
           --health-retries 20
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - name: Restore dependencies
+        run: dotnet restore CRN.ProductAssessment.sln
 
-    - name: Restore dependencies
-      run: dotnet restore CRN.ProductAssessment.sln
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef --version 8.*
 
-    - name: Install EF Core tools
-      run: dotnet tool install --global dotnet-ef --version 8.*
+      - name: Wait for SQL Server
+        run: |
+          for i in {1..30}; do
+            if timeout 1 bash -c '</dev/tcp/127.0.0.1/1433' 2>/dev/null; then
+              echo "SQL Server is ready."
+              break
+            fi
+            echo "Waiting for SQL Server..."
+            sleep 2
+          done
 
-    - name: Wait for SQL Server
-      run: |
-        for i in {1..30}; do
-          if timeout 1 bash -c '</dev/tcp/127.0.0.1/1433' 2>/dev/null; then
-            echo "SQL Server is ready."
-            break
-          fi
-          echo "Waiting for SQL Server..."
-          sleep 2
-        done
+      - name: Apply database migrations
+        env:
+          ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=CRNProductAssessmentDB;User Id=sa;Password=${{ secrets.MSSQL_SA_PASSWORD }};TrustServerCertificate=True;MultipleActiveResultSets=True"
+        run: |
+          dotnet ef database update \
+            --project CRN.Infrastructure/CRN.Infrastructure.csproj \
+            --startup-project CRN.API/CRN.API.csproj
 
-    - name: Apply database migrations
-      env:
-        ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=CRNProductAssessmentDB;User Id=sa;Password=${{ secrets.MSSQL_SA_PASSWORD }};TrustServerCertificate=True;MultipleActiveResultSets=True"
-      run: |
-        dotnet ef database update \
-          --project CRN.Infrastructure/CRN.Infrastructure.csproj \
-          --startup-project CRN.API/CRN.API.csproj
+      - name: Build solution
+        run: dotnet build CRN.ProductAssessment.sln --configuration Release --no-restore
 
-    - name: Build solution
-      run: dotnet build CRN.ProductAssessment.sln --configuration Release --no-restore
-
-    - name: Run tests
-      env:
-        MSSQL_SA_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD }}
-      run: dotnet test CRN.ProductAssessment.sln --configuration Release --no-build
+      - name: Run tests
+        env:
+          MSSQL_SA_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD }}
+        run: dotnet test CRN.ProductAssessment.sln --configuration Release --no-build
