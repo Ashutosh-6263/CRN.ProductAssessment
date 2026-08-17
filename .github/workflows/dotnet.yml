@@ -1,4 +1,4 @@
-name: .NET CI
+  name: .NET CI
 
 on:
   push:
@@ -11,7 +11,22 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD }}
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${{ secrets.MSSQL_SA_PASSWORD }}' -C -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 20
+
     steps:
+
     - name: Checkout repository
       uses: actions/checkout@v4
 
@@ -23,8 +38,32 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore CRN.ProductAssessment.sln
 
+    - name: Install EF Core tools
+      run: dotnet tool install --global dotnet-ef --version 8.*
+
+    - name: Wait for SQL Server
+      run: |
+        for i in {1..30}; do
+          if timeout 1 bash -c '</dev/tcp/127.0.0.1/1433' 2>/dev/null; then
+            echo "SQL Server is ready."
+            break
+          fi
+          echo "Waiting for SQL Server..."
+          sleep 2
+        done
+
+    - name: Apply database migrations
+      env:
+        ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=CRNProductAssessmentDB;User Id=sa;Password=${{ secrets.MSSQL_SA_PASSWORD }};TrustServerCertificate=True;MultipleActiveResultSets=True"
+      run: |
+        dotnet ef database update \
+          --project CRN.Infrastructure/CRN.Infrastructure.csproj \
+          --startup-project CRN.API/CRN.API.csproj
+
     - name: Build solution
       run: dotnet build CRN.ProductAssessment.sln --configuration Release --no-restore
 
     - name: Run tests
+      env:
+        MSSQL_SA_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD }}
       run: dotnet test CRN.ProductAssessment.sln --configuration Release --no-build
