@@ -22,6 +22,9 @@ services:
       - sqlserver
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      Jwt__Key: "CRN-ProductAssessment-SuperSecretKey-2026-AtLeast32Characters!"
+      Jwt__Issuer: "CRN.API"
+      Jwt__Audience: "CRN.Client"
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=CRNProductAssessmentDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=True"
     ports:
       - "8080:8080"
